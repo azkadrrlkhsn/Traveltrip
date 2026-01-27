@@ -4,4 +4,4 @@ Halaman akan berisi kode JavaScript penuh.
 
 Klik kanan -> Save As... (Simpan Sebagai).
 
-Simpan di: public/assets/js/vendor/tailwind.js
+Simpan di: public/assets/js/vendor/tailwind.js  
