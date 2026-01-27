@@ -1,0 +1,52 @@
+/* public/assets/css/style.css */
+
+/* --- 1. Definisi Font Lokal (Poppins) --- */
+/* Sesuaikan nama file url() dengan file yang Anda download */
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/poppins/poppins-v20-latin-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  src: url("../fonts/poppins/poppins-v20-latin-500.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  src: url("../fonts/poppins/poppins-v20-latin-600.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  src: url("../fonts/poppins/poppins-v20-latin-700.woff2") format("woff2");
+}
+
+/* --- 2. Global Base Styles --- */
+body {
+  font-family: "Poppins", sans-serif;
+  /* Warna background default Tripio */
+  background-color: #f8fafc; /* slate-50 equivalent */
+  -webkit-tap-highlight-color: transparent; /* Hilangkan highlight biru di mobile */
+}
+
+/* --- 3. Custom Utilities --- */
+
+/* Sembunyikan Scrollbar tapi tetap bisa di-scroll (untuk menu kategori horizontal) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
