@@ -10,3 +10,5 @@ Klik kanan -> Save As....
 Simpan di: public/assets/js/vendor/alpine.js
 
 mwwqqq
+
+coba push alpine js
