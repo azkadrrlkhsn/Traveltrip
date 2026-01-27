@@ -1,14 +1,7 @@
-B. Alpine.js
-Interaktivitas ringan untuk mobile menu dan toggle.
+Buka browser, akses: https://cdn.tailwindcss.com
 
-Buka browser, akses: https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js
+Halaman akan berisi kode JavaScript penuh.
 
-Halaman akan berisi kode JavaScript yang sudah dimiimize.
+Klik kanan -> Save As... (Simpan Sebagai).
 
-Klik kanan -> Save As....
-
-Simpan di: public/assets/js/vendor/alpine.js
-
-mwwqqq
-
-coba push alpine js
+Simpan di: public/assets/js/vendor/tailwind.js
