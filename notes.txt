@@ -8,3 +8,5 @@ Halaman akan berisi kode JavaScript yang sudah dimiimize.
 Klik kanan -> Save As....
 
 Simpan di: public/assets/js/vendor/alpine.js
+
+mwwqqq
