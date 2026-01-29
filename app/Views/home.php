@@ -20,6 +20,10 @@
         .mob-blue-header { background-color: #4FC3F7; }
         .mob-btn-yellow { background-color: #FFD54F; color: #1F2937; }
         .mob-card-shadow { box-shadow: 0 10px 40px -10px rgba(0,0,0,0.15); }
+
+        /* Sembunyikan scrollbar */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body>
@@ -87,23 +91,22 @@
                 <h2 class="text-lg font-bold text-gray-800">Popular Destination</h2>
                 <a href="#" class="text-[#4FC3F7] text-xs font-bold">View All</a>
             </div>
+            
             <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-4">
-                <div class="min-w-[160px] h-[200px] rounded-3xl overflow-hidden relative shadow-md">
-                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent p-4 flex flex-col justify-end">
-                        <span class="bg-white/20 backdrop-blur-md text-white text-[9px] px-2 py-1 rounded-md w-fit mb-auto self-end">Beach</span>
-                        <p class="text-white font-bold text-sm">Parco Natural</p>
-                        <p class="text-gray-200 text-[10px]">South Tyrol</p>
-                    </div>
-                </div>
-                <div class="min-w-[160px] h-[200px] rounded-3xl overflow-hidden relative shadow-md">
-                    <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=300" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent p-4 flex flex-col justify-end">
-                        <span class="bg-white/20 backdrop-blur-md text-white text-[9px] px-2 py-1 rounded-md w-fit mb-auto self-end">Resort</span>
-                        <p class="text-white font-bold text-sm">Maldives</p>
-                        <p class="text-gray-200 text-[10px]">Island</p>
-                    </div>
-                </div>
+                <?php if(!empty($destinations)): ?>
+                    <?php foreach($destinations as $dest): ?>
+                    <a href="<?= base_url('tour/' . $dest['id']) ?>" class="block min-w-[160px] h-[200px] rounded-3xl overflow-hidden relative shadow-md flex-shrink-0">
+                        <img src="<?= $dest['image_url'] ?>" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent p-4 flex flex-col justify-end">
+                            <span class="bg-white/20 backdrop-blur-md text-white text-[9px] px-2 py-1 rounded-md w-fit mb-auto self-end"><?= $dest['category'] ?></span>
+                            <p class="text-white font-bold text-sm"><?= $dest['name'] ?></p>
+                            <p class="text-gray-200 text-[10px]"><?= $dest['location'] ?></p>
+                        </div>
+                    </a>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-sm text-gray-400 italic">Belum ada destinasi.</p>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -164,113 +167,70 @@
                     Discover the beauty of your home country with Tripio Tour.
                 </p>
 
-                <div class="absolute bottom-24 bg-white rounded-full pl-8 pr-2 py-2 flex items-center shadow-2xl gap-4 w-[700px]">
+                <form action="<?= base_url('home/search') ?>" method="get" class="absolute bottom-24 bg-white rounded-full pl-8 pr-2 py-2 flex items-center shadow-2xl gap-4 w-[700px]">
                     <i data-lucide="search" class="w-4 h-4 text-gray-400"></i>
-                    <input type="text" placeholder="Enter tour name" class="flex-1 text-sm text-gray-700 focus:outline-none placeholder:font-light">
+                    <input type="text" name="keyword" placeholder="Enter tour name" class="flex-1 text-sm text-gray-700 focus:outline-none placeholder:font-light" value="<?= isset($keyword) ? $keyword : '' ?>">
                     <div class="h-6 w-[1px] bg-gray-200"></div>
                     <i data-lucide="calendar" class="w-4 h-4 text-gray-400"></i>
                     <input type="text" placeholder="14.03.2025 - 14.04.2025" class="w-48 text-sm text-gray-700 focus:outline-none placeholder:font-light text-center">
-                    <button class="web-btn-brown px-8 py-3 rounded-full text-[10px] font-bold tracking-widest uppercase">
+                    <button type="submit" class="web-btn-brown px-8 py-3 rounded-full text-[10px] font-bold tracking-widest uppercase hover:bg-black transition">
                         Search Tours
                     </button>
-                </div>
+                </form>
             </div>
         </section>
 
         <section class="max-w-[1200px] mx-auto px-6 py-24">
             <div class="flex justify-between items-end mb-12">
                 <h2 class="text-4xl font-bold text-[#4A3B32]">Special for you</h2>
-                <a href="#" class="text-xs font-bold text-gray-400 border-b border-gray-200 pb-1 hover:text-black">all tours →</a>
+                <a href="<?= base_url('/') ?>" class="text-xs font-bold text-gray-400 border-b border-gray-200 pb-1 hover:text-black">all tours →</a>
             </div>
 
             <div class="grid grid-cols-3 gap-8">
-                
-                <div class="group">
-                    <div class="relative h-64 overflow-hidden rounded-sm mb-6">
-                        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600" class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
-                        <div class="absolute top-3 right-3 bg-white/30 backdrop-blur-md p-1.5 rounded-sm">
-                            <i data-lucide="mountain" class="w-4 h-4 text-white"></i>
+                <?php if(!empty($tours)): ?>
+                    <?php foreach($tours as $tour): ?>
+                    <div class="group">
+                        <div class="relative h-64 overflow-hidden rounded-sm mb-6">
+                            <img src="<?= $tour['image_url'] ?>" class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
+                            <div class="absolute top-3 right-3 bg-white/30 backdrop-blur-md p-1.5 rounded-sm">
+                                <i data-lucide="mountain" class="w-4 h-4 text-white"></i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flex gap-2 mb-2">
-                         <span class="text-[9px] text-gray-400 uppercase">river rafting</span>
-                         <span class="text-[9px] text-gray-400 uppercase">•</span>
-                         <span class="text-[9px] text-gray-400 uppercase">hiking</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">Altai mountains — full immersion</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed mb-6">The best sights of the Altai Territory in 2 weeks</p>
-                    
-                    <div class="flex gap-6 text-[10px] text-gray-500 font-bold mb-6">
-                        <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-3 h-3"></i> 14 days</span>
-                        <span class="flex items-center gap-2"><i data-lucide="user" class="w-3 h-3"></i> 2 person</span>
-                    </div>
-                    
-                    <div class="flex justify-between items-center border-t border-gray-100 pt-6">
-                        <div>
-                            <p class="text-[10px] text-gray-400 line-through decoration-red-500">140 800 P</p>
-                            <p class="text-xl font-bold web-price-red">120 800 P</p>
+                        
+                        <div class="flex gap-2 mb-2">
+                             <?php if(!empty($tour['tags'])): 
+                                $tags = explode(',', $tour['tags']);
+                                foreach($tags as $index => $tag): ?>
+                                    <span class="text-[9px] text-gray-400 uppercase"><?= trim($tag) ?></span>
+                                    <?= ($index < count($tags) - 1) ? '<span class="text-[9px] text-gray-400 uppercase">•</span>' : '' ?>
+                                <?php endforeach; 
+                             endif; ?>
                         </div>
-                        <button class="web-btn-brown px-8 py-3 rounded-full text-[10px] font-bold tracking-widest uppercase">BOOK</button>
-                    </div>
-                </div>
 
-                <div class="group">
-                    <div class="relative h-64 overflow-hidden rounded-sm mb-6">
-                        <img src="https://images.unsplash.com/photo-1516690553959-71a414d6b9b6?auto=format&fit=crop&w=600" class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
-                        <div class="absolute top-3 right-3 bg-white/30 backdrop-blur-md p-1.5 rounded-sm">
-                            <i data-lucide="map" class="w-4 h-4 text-white"></i>
+                        <h3 class="text-lg font-bold text-gray-800 mb-2"><?= $tour['name'] ?></h3>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-6 line-clamp-2"><?= $tour['description'] ?></p>
+                        
+                        <div class="flex gap-6 text-[10px] text-gray-500 font-bold mb-6">
+                            <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-3 h-3"></i> <?= $tour['duration'] ?> days</span>
+                            <span class="flex items-center gap-2"><i data-lucide="user" class="w-3 h-3"></i> <?= $tour['capacity'] ?> person</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center border-t border-gray-100 pt-6">
+                            <div>
+                                <p class="text-[10px] text-gray-400 line-through decoration-red-500"><?= number_format($tour['price'], 0, ',', '.') ?> P</p>
+                                <p class="text-xl font-bold web-price-red"><?= number_format($tour['discount_price'], 0, ',', '.') ?> P</p>
+                            </div>
+                            <a href="<?= base_url('tour/' . $tour['id']) ?>" class="web-btn-brown px-8 py-3 rounded-full text-[10px] font-bold tracking-widest uppercase hover:bg-black transition inline-block text-center">
+                                BOOK
+                            </a>
                         </div>
                     </div>
-                    <div class="flex gap-2 mb-2">
-                         <span class="text-[9px] text-gray-400 uppercase">hot springs</span>
-                         <span class="text-[9px] text-gray-400 uppercase">•</span>
-                         <span class="text-[9px] text-gray-400 uppercase">geysers</span>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="col-span-3 text-center py-10">
+                        <p class="text-slate-400 italic">Tidak ada tur ditemukan.</p>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">Adventures by Kamchatka</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed mb-6">In search of adventures. Tour to Kamchatka without tents.</p>
-                    
-                    <div class="flex gap-6 text-[10px] text-gray-500 font-bold mb-6">
-                        <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-3 h-3"></i> 7 days</span>
-                        <span class="flex items-center gap-2"><i data-lucide="user" class="w-3 h-3"></i> 1 person</span>
-                    </div>
-                    
-                    <div class="flex justify-between items-center border-t border-gray-100 pt-6">
-                        <div>
-                            <p class="text-[10px] text-gray-400 line-through decoration-red-500">98 600 P</p>
-                            <p class="text-xl font-bold web-price-red">84 200 P</p>
-                        </div>
-                        <button class="web-btn-brown px-8 py-3 rounded-full text-[10px] font-bold tracking-widest uppercase">BOOK</button>
-                    </div>
-                </div>
-
-                 <div class="group">
-                    <div class="relative h-64 overflow-hidden rounded-sm mb-6">
-                        <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=600" class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
-                        <div class="absolute top-3 right-3 bg-white/30 backdrop-blur-md p-1.5 rounded-sm">
-                            <i data-lucide="anchor" class="w-4 h-4 text-white"></i>
-                        </div>
-                    </div>
-                    <div class="flex gap-2 mb-2">
-                         <span class="text-[9px] text-gray-400 uppercase">arctic tour</span>
-                         <span class="text-[9px] text-gray-400 uppercase">•</span>
-                         <span class="text-[9px] text-gray-400 uppercase">cruise</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">Journey to Teriberka</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed mb-6">Reboot on the shores of the Barents Sea and find out how.</p>
-                    
-                    <div class="flex gap-6 text-[10px] text-gray-500 font-bold mb-6">
-                        <span class="flex items-center gap-2"><i data-lucide="calendar" class="w-3 h-3"></i> 4 days</span>
-                        <span class="flex items-center gap-2"><i data-lucide="user" class="w-3 h-3"></i> 1 person</span>
-                    </div>
-                    
-                    <div class="flex justify-between items-center border-t border-gray-100 pt-6">
-                        <div>
-                            <p class="text-[10px] text-gray-400 line-through decoration-red-500">68 800 P</p>
-                            <p class="text-xl font-bold web-price-red">51 700 P</p>
-                        </div>
-                        <button class="web-btn-brown px-8 py-3 rounded-full text-[10px] font-bold tracking-widest uppercase">BOOK</button>
-                    </div>
-                </div>
+                <?php endif; ?>
             </div>
 
             <div class="flex gap-8 mt-24">
