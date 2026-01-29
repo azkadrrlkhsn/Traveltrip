@@ -42,14 +42,31 @@
                 </nav>
             </div>
             
-            <div class="flex items-center gap-4">
-                <button class="hidden md:block text-sm font-bold text-tripio-600 border border-tripio-100 px-5 py-2 rounded-full hover:bg-tripio-50 transition">
-                    Masuk / Daftar
-                </button>
-                <div class="w-10 h-10 rounded-full bg-tripio-100 flex items-center justify-center text-tripio-600 font-bold border-2 border-white shadow-md cursor-pointer">
-                    TR
+           <?php if(session()->get('is_logged_in')): ?>
+    
+    <div class="hidden md:flex items-center gap-4">
+        <a href="<?= base_url('akun') ?>" class="flex items-center gap-2">
+            <?php if(session()->get('foto')): ?>
+                <img src="<?= session()->get('foto') ?>" class="w-8 h-8 rounded-full border border-slate-200">
+            <?php else: ?>
+                <div class="w-8 h-8 rounded-full bg-tripio-100 flex items-center justify-center text-tripio-600 font-bold text-xs">
+                    <?= substr(session()->get('nama'), 0, 1) ?>
                 </div>
-            </div>
+            <?php endif; ?>
+            
+            <span class="text-sm font-bold text-slate-600">
+                <?= substr(session()->get('nama'), 0, 10) ?>...
+            </span>
+        </a>
+    </div>
+
+<?php else: ?>
+
+    <a href="<?= base_url('login') ?>" class="hidden md:block text-sm font-bold text-tripio-600 border border-tripio-100 px-5 py-2 rounded-full hover:bg-tripio-50 transition">
+        Masuk / Daftar
+    </a>
+
+<?php endif; ?>
         </div>
     </header>
 
