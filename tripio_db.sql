@@ -150,3 +150,34 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+CREATE TABLE tours (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2),
+    discount_price DECIMAL(10,2),
+    duration INT, -- dalam hari
+    capacity INT, -- jumlah orang
+    image_url VARCHAR(255),
+    tags VARCHAR(255), -- contoh: 'hiking, rafting'
+    type ENUM('tour', 'flight') DEFAULT 'tour'
+);
+
+CREATE TABLE destinations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    location VARCHAR(255),
+    category VARCHAR(50), -- contoh: 'Beach', 'Mountain'
+    image_url VARCHAR(255)
+);
+
+-- Masukkan Data Dummy agar langsung muncul di web
+INSERT INTO tours (name, description, price, discount_price, duration, capacity, image_url, tags) VALUES
+('Altai Mountains - Full Immersion', 'Pemandangan terbaik wilayah Altai dalam 2 minggu.', 140800, 120800, 14, 2, 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600', 'rafting, hiking'),
+('Adventures by Kamchatka', 'Mencari petualangan tanpa tenda di Kamchatka.', 98600, 84200, 7, 1, 'https://images.unsplash.com/photo-1516690553959-71a414d6b9b6?auto=format&fit=crop&w=600', 'hot springs, geysers'),
+('Journey to Teriberka', 'Reboot di tepi Laut Barents yang menakjubkan.', 68800, 51700, 4, 1, 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=600', 'arctic tour, cruise');
+
+INSERT INTO destinations (name, location, category, image_url) VALUES
+('Parco Natural', 'South Tyrol', 'Beach', 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300'),
+('Maldives Resort', 'Maldives', 'Island', 'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=300');
