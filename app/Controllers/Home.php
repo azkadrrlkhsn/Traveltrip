@@ -2,61 +2,57 @@
 
 namespace App\Controllers;
 
-use App\Models\TourModel;
-use App\Models\DestinationModel;
+use CodeIgniter\Controller;
+use CodeIgniter\HTTP\CLIRequest;
+use CodeIgniter\HTTP\IncomingRequest;
+use CodeIgniter\HTTP\RequestInterface;
+use CodeIgniter\HTTP\ResponseInterface;
+use Psr\Log\LoggerInterface;
 
-class Home extends BaseController
+/**
+ * Class BaseController
+ *
+ * BaseController provides a convenient place for loading components
+ * and performing functions that are needed by all your controllers.
+ * Extend this class in any new controllers:
+ * class Home extends BaseController
+ *
+ * For security be sure to declare any new methods as protected or private.
+ */
+abstract class BaseController extends Controller
 {
-    public function index()
+    /**
+     * Instance of the main Request object.
+     *
+     * @var CLIRequest|IncomingRequest
+     */
+    protected $request;
+
+    /**
+     * An array of helpers to be loaded automatically upon
+     * class instantiation. These helpers will be available
+     * to all other controllers that extend BaseController.
+     *
+     * @var list<string>
+     */
+    protected $helpers = [];
+
+    /**
+     * Be sure to declare properties for any property fetch you initialized.
+     * The creation of dynamic property is deprecated in PHP 8.2.
+     */
+    // protected $session;
+
+    /**
+     * @return void
+     */
+    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
-        // 1. Panggil Model
-        $tourModel = new TourModel();
-        $destinationModel = new DestinationModel();
+        // Do Not Edit This Line
+        parent::initController($request, $response, $logger);
 
-        // 2. Ambil data dari Database
-        $data = [
-            // Data untuk Web (Tours)
-            'tours' => $tourModel->findAll(),
-            
-            // Data untuk Mobile (Destinasi)
-            'destinations' => $destinationModel->findAll()
-        ];
+        // Preload any models, libraries, etc, here.
 
-        // 3. Tampilkan View 'home' dengan membawa data
-        return view('home', $data);
-    }
-
-    public function search()
-    {
-        $keyword = $this->request->getVar('keyword');
-        $tourModel = new TourModel();
-        $destinationModel = new DestinationModel();
-        
-        // Logika Pencarian
-        $data = [
-            'tours' => $tourModel->like('name', $keyword)->findAll(),
-            'destinations' => $destinationModel->findAll() // Tetap load ini agar tampilan mobile tidak error
-        ];
-        
-        return view('home', $data);
-    }
-
-    public function detail($id)
-    {
-        $tourModel = new TourModel();
-        
-        // Ambil 1 data berdasarkan ID
-        $tour = $tourModel->find($id);
-
-        // Jika data tidak ditemukan (misal ID 9999), tampilkan error 404
-        if (empty($tour)) {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException('Tur tidak ditemukan: ' . $id);
-        }
-
-        $data = [
-            'tour' => $tour
-        ];
-
-        return view('detail', $data);
+        // E.g.: $this->session = \Config\Services::session();
     }
 }

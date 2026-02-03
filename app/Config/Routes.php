@@ -6,50 +6,40 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 
-// --------------------------------------------------------------------
-// Router Setup
-// --------------------------------------------------------------------
-$routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Home');
-$routes->setDefaultMethod('index');
-$routes->setTranslateURIDashes(false);
-$routes->set404Override();
-// The Auto Routing (Legacy) is very dangerous. It is easy to create vulnerable apps
-// where controller filters or CSRF protection are bypassed.
-// If you don't want to define all routes, please use the Auto Routing (Improved).
-// Set `$autoRoutesImproved` to true in `app/Config/Feature.php` and set the following to true.
-// $routes->setAutoRoute(false);
+$routes->get('/', 'Home::index');                    
+$routes->get('home/search', 'Home::search');         
+$routes->get('tour/(:num)', 'Home::detail/$1');      
+$routes->get('lang/(:segment)', 'Home::setLanguage/$1'); 
 
-/*
- * --------------------------------------------------------------------
- * Route Definitions
- * --------------------------------------------------------------------
- */
+// AUTH
+$routes->get('login', 'Auth::login');                
+$routes->post('auth/process', 'Auth::process');      
+$routes->get('logout', 'Auth::logout');              
+$routes->get('auth/google_login', 'Auth::google_login');       
+$routes->get('auth/google_callback', 'Auth::google_callback'); 
 
-// 1. Halaman Utama (Dashboard)
-$routes->get('/', 'Home::index');
+// === BOOKING MANUAL SYSTEM ===
+$routes->post('payment', 'Home::payment');           // Halaman Review & Info Rekening
+$routes->post('booking/process', 'Home::process_booking'); // Proses Upload Bukti
+$routes->get('booking/success', 'Home::success');        
+$routes->get('booking/history', 'Home::history');        
+$routes->get('booking/print/(:num)', 'Home::print_ticket/$1'); 
 
-// 2. Fitur Pencarian (Search)
-$routes->get('home/search', 'Home::search');
+// Review & Profile
+$routes->post('review/save', 'Home::saveReview');
+$routes->get('user/profile', 'Home::profile');       
+$routes->get('user/edit', 'Home::editProfile');      
+$routes->post('user/update', 'Home::updateProfile'); 
 
-// 3. Halaman Detail Tur (Saat tombol BOOK diklik)
-// (:num) artinya kita menangkap ID berupa angka
-$routes->get('tour/(:num)', 'Home::detail/$1');
-
-
-/*
- * --------------------------------------------------------------------
- * Additional Routing
- * --------------------------------------------------------------------
- *
- * There will often be times that you need additional routing and you
- * need it to be able to override any defaults in this file. Environment
- * based routes is one such time. require() additional route files here
- * to make that happen.
- *
- * You will have access to the $routes object within that file without
- * needing to reload it.
- */
-if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
-    require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
-}
+// ADMIN
+$routes->get('admin', 'Admin::index');               
+$routes->get('admin/bookings', 'Admin::bookings');   
+$routes->post('admin/confirm/(:num)', 'Admin::confirm/$1'); 
+$routes->post('admin/reject/(:num)', 'Admin::reject/$1');   
+$routes->get('admin/bookings/delete/(:num)', 'Admin::delete_booking/$1'); 
+$routes->get('admin/tours', 'Admin::tours');              
+$routes->get('admin/tours/create', 'Admin::create_tour'); 
+$routes->post('admin/tours/store', 'Admin::store_tour');  
+$routes->get('admin/tours/edit/(:num)', 'Admin::edit_tour/$1'); 
+$routes->post('admin/tours/update/(:num)', 'Admin::update_tour/$1'); 
+$routes->get('admin/tours/delete/(:num)', 'Admin::delete_tour/$1');
